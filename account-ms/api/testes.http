@@ -1,0 +1,19 @@
+GET http://localhost:3003/balances/443471277
+
+###
+
+POST http://localhost:3003/balances/
+Content-Type: application/json
+
+{
+    "accountId": "443471277"
+}
+
+###
+PUT http://localhost:3003/balances/
+Content-Type: application/json
+
+{
+    "accountId": "443471277",
+    "balanceValue": 14000.50
+}

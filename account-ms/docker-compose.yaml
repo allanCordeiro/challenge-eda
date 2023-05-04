@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  balance-app:
+    build: .
+    ports:
+      - 3003:3000
+    volumes:
+      - .:/home/node/app
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+
+  balance-db:
+    image: mysql:8.0.30-debian
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=balances
+    volumes:
+      - .docker/dbdata:/var/lib/mysql
