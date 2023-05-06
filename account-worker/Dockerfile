@@ -11,10 +11,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
 COPY package*.json ./
 RUN npm install 
 
-ENV PATH="./node_modules/nest/bin:$PATH"
-
 
 COPY . .
-
 
 CMD [ "npm", "run", "start" ]
