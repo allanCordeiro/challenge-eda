@@ -4,9 +4,6 @@ WORKDIR /home/node/app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY package.json package-lock.json ./
-
-RUN npm install
 
 COPY . .
 
