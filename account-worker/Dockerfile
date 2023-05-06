@@ -2,13 +2,10 @@ FROM node:19-slim
 
 WORKDIR /home/node/app
 COPY package*.json ./
-RUN npm install
+RUN npm install --only=production
 
 
 COPY . .
 
-RUN chown -R node:node /home/node/app
-USER node
-RUN npm run build
 
-CMD ["npm", "run", "start:dev"]
+CMD [ "npm", "start" ]
