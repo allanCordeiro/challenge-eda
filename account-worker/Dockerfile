@@ -2,7 +2,7 @@ FROM node:19-slim
 
 WORKDIR /home/node/app
 COPY package*.json ./
-RUN npm ci
+RUN npm install
 
 
 COPY . .
