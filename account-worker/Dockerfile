@@ -9,6 +9,6 @@ COPY . .
 
 RUN chown -R node:node /home/node/app
 USER node
-RUN npm build
+RUN npm run build
 
 CMD ["npm", "run", "start:dev"]
