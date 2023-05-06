@@ -28,7 +28,7 @@ export class BalancesService {
     return this.prisma.balance.create({
       data: {
         accountId: createBalanceDto.accountId,
-        value: 0.0,
+        value: createBalanceDto.value,
       },
     });
   }

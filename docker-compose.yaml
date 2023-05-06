@@ -1,16 +1,30 @@
-version: '3'
+version: '3.6'
+services:                  
+  balance-db:
+    image: mysql:5.7
+    platform: linux/amd64
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=balances      
+    ports:
+      - 3307:3306    
+    volumes:
+      - .docker/balance-app/mysql:/var/lib/mysql    
 
-services:
-  goapp:
-      build: ./fc-ms-wallet        
-      volumes:
-        - .:/app
-      ports:
-        - 8080:8080
-      depends_on:
-        - mysql         
+  balance-app:
+    build:
+      context: ./account-ms
+    ports:
+      - 3003:3000
+    volumes:
+      - ./account-ms:/home/node/app
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+    depends_on:
+      - balance-db
+    command: sh -c "dockerize -wait tcp://balance-db:3306 -timeout 240s -wait-retry-interval 2s npx prisma generate dev && npx prisma migrate dev && npm run start"
 
-  mysql:
+  wallet-db:
       image: mysql:5.7
       platform: linux/amd64
       environment:
@@ -20,7 +34,20 @@ services:
       ports:
         - 3306:3306
       volumes:
-        - .docker/mysql:/var/lib/mysql
+        - .docker/fc-ms-wallet/mysql:/var/lib/mysql
+      extra_hosts:
+        - "host.docker.internal:172.17.0.1"      
+
+  goapp:
+      build: 
+        context: ./fc-ms-wallet                  
+      volumes:
+        - ./fc-ms-wallet:/usr/src/app
+      ports:
+        - 8080:8080
+      depends_on:
+        - wallet-db  
+      command: sh -c "dockerize -wait tcp://wallet-db:3306 -timeout 240s -wait-retry-interval 2s && /walletcore"
 
   zookeeper:
     image: "confluentinc/cp-zookeeper:6.1.0"
@@ -55,6 +82,8 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 100
       CONFLUENT_METRICS_ENABLE: 'false' 
+    extra_hosts:
+        - "host.docker.internal:172.17.0.1"
 
   control-center:
     image: confluentinc/cp-enterprise-control-center:7.3.0
@@ -81,4 +110,16 @@ services:
         "sleep 10s &&
         kafka-topics --create --topic=accounts --if-not-exists --bootstrap-server=kafka:29092 &&
         kafka-topics --create --topic=transactions --if-not-exists --bootstrap-server=kafka:29092 &&
-        kafka-topics --create --topic=balances --if-not-exists --bootstrap-server=kafka:29092"          
+        kafka-topics --create --topic=balances --if-not-exists --bootstrap-server=kafka:29092"      
+
+
+  account-worker:
+    build:
+      context: ./account-worker
+    volumes:
+      - ./account-worker:/home/node/app
+    depends_on:
+      - kafka
+    extra_hosts:
+      - "host.docker.internal:172.17.0.1"
+

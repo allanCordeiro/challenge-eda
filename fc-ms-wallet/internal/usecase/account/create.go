@@ -14,6 +14,11 @@ type CreateAccountOutputDTO struct {
 	ID string
 }
 
+type CreateAccountEventOutputDTO struct {
+	ID    string
+	Value float64
+}
+
 type CreateAccountUseCase struct {
 	AccountGateway  gateway.AccountGateway
 	ClientGateway   gateway.ClientGateway
@@ -51,7 +56,11 @@ func (uc *CreateAccountUseCase) Execute(input CreateAccountInputDTO) (*CreateAcc
 	var output CreateAccountOutputDTO
 	output.ID = account.ID
 
-	uc.AccountCreated.SetPayload(account.ID)
+	var eventOutput CreateAccountEventOutputDTO
+	eventOutput.ID = account.ID
+	eventOutput.Value = account.Balance
+
+	uc.AccountCreated.SetPayload(eventOutput)
 	uc.EventDispatcher.Dispatch(uc.AccountCreated)
 
 	return &output, nil

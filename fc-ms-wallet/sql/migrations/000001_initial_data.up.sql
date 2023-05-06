@@ -9,3 +9,6 @@ CREATE TABLE IF NOT EXISTS accounts
 
 CREATE TABLE IF NOT EXISTS transactions
 (id varchar(255), account_id_from varchar(255), account_id_to varchar(255), amount float, created_at timestamp);
+
+INSERT INTO clients (id, name, email) VALUES('e7d3ae24-560a-4a77-9660-3bb5bbf927b6', 'John Doe', 'john.doe@gmail.com');
+INSERT INTO clients (id, name, email) VALUES('e2afa43c-de24-4d83-b5a5-581a1d740d4c', 'Jane Doe', 'jane.doe@gmail.com');

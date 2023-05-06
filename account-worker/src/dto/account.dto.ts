@@ -1,4 +1,4 @@
-export class CreateBalanceDto {
+export class AccountDto {
   accountId: string;
   value: number;
 }
