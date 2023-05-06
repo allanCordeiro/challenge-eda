@@ -112,7 +112,6 @@ services:
         kafka-topics --create --topic=transactions --if-not-exists --bootstrap-server=kafka:29092 &&
         kafka-topics --create --topic=balances --if-not-exists --bootstrap-server=kafka:29092"      
 
-
   account-worker:
     build:
       context: ./account-worker
