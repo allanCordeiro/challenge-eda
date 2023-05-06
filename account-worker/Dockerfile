@@ -10,4 +10,4 @@ COPY . .
 RUN chown -R node:node /home/node/app
 USER node
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:dev"]
