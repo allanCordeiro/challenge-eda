@@ -120,7 +120,7 @@ services:
       - PATH=/usr/src/app/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     volumes:
       - ./account-worker:/home/node/app
-    command: sh -c "dockerize -wait tcp://kafka:29092 -timeout 240s -wait-retry-interval 2s && npm run start"
+    command: sh -c "dockerize -wait tcp://kafka:29092 -timeout 240s -wait-retry-interval 2s npm install && npm run start"
     depends_on:
       - kafka
     extra_hosts:
