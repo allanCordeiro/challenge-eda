@@ -1,7 +1,7 @@
 FROM node:19-slim
 
 WORKDIR /home/node/app
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm install
 
 
