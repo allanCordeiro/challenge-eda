@@ -12,7 +12,7 @@ import { Transport, ClientsModule } from '@nestjs/microservices';
         options: {
           client: {
             clientId: '1',
-            brokers: ['kafka:9092'], //TODO: configurar como variavel de ambiente
+            brokers: ['kafka:29092'], //TODO: configurar como variavel de ambiente
           },
           consumer: {
             groupId: 'balance-workers',

@@ -10,7 +10,7 @@ async function bootstrap() {
       options: {
         client: {
           //TODO: configurar como variavel de ambiente
-          brokers: ['kafka:9092'],
+          brokers: ['kafka:29092'],
         },
       },
     },
